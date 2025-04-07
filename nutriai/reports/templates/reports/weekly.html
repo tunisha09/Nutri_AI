@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}Weekly Report{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-calendar-week"></i> Weekly Report ({{ start_date|date:"M d" }} - {{ end_date|date:"M d, Y" }})</h3>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="calorieChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="exerciseChart"></canvas>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-fire"></i> Weekly Calorie Summary</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    {% for day in days %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ day|date:"D, M d" }}
+                                            <span class="badge bg-primary rounded-pill">{{ calorie_data|get_item:forloop.counter0 }} kcal</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-running"></i> Weekly Exercise Summary</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    {% for day in days %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ day|date:"D, M d" }}
+                                            <span class="badge bg-success rounded-pill">{{ exercise_data|get_item:forloop.counter0 }} kcal burned</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Calorie Chart
+    const calorieCtx = document.getElementById('calorieChart').getContext('2d');
+    const calorieChart = new Chart(calorieCtx, {
+        type: 'line',
+        data: {
+            labels: [{% for day in days %}"{{ day|date:'D' }}",{% endfor %}],
+            datasets: [{
+                label: 'Calories Consumed',
+                data: [{% for cal in calorie_data %}{{ cal }},{% endfor %}],
+                borderColor: '#ff6b6b',
+                backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Daily Calorie Intake'
+                }
+            }
+        }
+    });
+    
+    // Exercise Chart
+    const exerciseCtx = document.getElementById('exerciseChart').getContext('2d');
+    const exerciseChart = new Chart(exerciseCtx, {
+        type: 'bar',
+        data: {
+            labels: [{% for day in days %}"{{ day|date:'D' }}",{% endfor %}],
+            datasets: [{
+                label: 'Calories Burned',
+                data: [{% for cal in exercise_data %}{{ cal }},{% endfor %}],
+                backgroundColor: '#4cc9f0',
+                borderColor: '#4cc9f0',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Daily Exercise Calories Burned'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Voice Log 🎤 | NutriAI{% endblock %}
+
+{% block content %}
+<div class="container anime-voice-container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="anime-title mb-4">
+                <i class="fas fa-microphone"></i> Voice Log Your Food 🎤🍎
+                <div class="parrot-mascot">🦜</div>
+            </h1>
+            
+            <div class="anime-voice-box p-4 mb-4">
+                <div class="voice-status-container">
+                    <div class="emoji-status" id="voiceStatus">🎤 Tap to speak</div>
+                    <button id="voiceBtn" class="btn anime-btn-primary mt-3">
+                        <i class="fas fa-microphone"></i> Start Speaking
+                    </button>
+                </div>
+
+                <div class="anime-results-box" id="voiceResults" style="display:none;">
+                    <h3 class="emoji-header">🎙️ You said:</h3>
+                    <div class="voice-text-display">
+                        <p id="voiceText">"I ate an apple"</p>
+                    </div>
+
+                    <div class="food-suggestions mt-4">
+                        <h4 class="emoji-subheader">🍽️ Did you mean:</h4>
+                        <div class="suggestion-buttons">
+                            <button class="btn anime-btn-suggestion">
+                                <span class="food-emoji">🍎</span> Apple
+                            </button>
+                            <button class="btn anime-btn-suggestion">
+                                <span class="food-emoji">🍏</span> Green Apple
+                            </button>
+                            <button class="btn anime-btn-suggestion">
+                                <span class="food-emoji">🍎🍏</span> Apple Mix
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="nutrition-facts anime-nutrition-card mt-4">
+                        <div class="fact">
+                            <span class="emoji">🔥</span>
+                            <span id="voiceCalories">52</span> kcal
+                        </div>
+                        <div class="fact">
+                            <span class="emoji">💪</span>
+                            <span id="voiceProtein">0.3</span>g protein
+                        </div>
+                        <div class="fact">
+                            <span class="emoji">🌾</span> 
+                            <span id="voiceCarbs">14</span>g carbs
+                        </div>
+                        <div class="fact">
+                            <span class="emoji">🥑</span>
+                            <span id="voiceFat">0.2</span>g fat
+                        </div>
+                    </div>
+
+                    <button class="btn anime-btn-success mt-3 w-100">
+                        <i class="fas fa-save"></i> Save Food Log 💾
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script src="{% static 'js/voice.js' %}"></script>
+<script>
+// Voice recognition logic will go here
+</script>
+{% endblock %}
+{% endblock %}

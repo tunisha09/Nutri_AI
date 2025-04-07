@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Log Food{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-utensils"></i> Log Food</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Food Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="calories" class="form-label">Calories</label>
+                        <input type="number" class="form-control" id="calories" name="calories" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="protein" class="form-label">Protein (g)</label>
+                                <input type="number" step="0.1" class="form-control" id="protein" name="protein">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="carbs" class="form-label">Carbs (g)</label>
+                                <input type="number" step="0.1" class="form-control" id="carbs" name="carbs">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="fat" class="form-label">Fat (g)</label>
+                                <input type="number" step="0.1" class="form-control" id="fat" name="fat">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="meal_type" class="form-label">Meal Type</label>
+                        <select class="form-select" id="meal_type" name="meal_type">
+                            <option value="breakfast">Breakfast</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="dinner">Dinner</option>
+                            <option value="snack">Snack</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-save"></i> Save Food Log
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4><i class="fas fa-camera"></i> Alternative Logging Methods</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <a href="{% url 'log_camera' %}" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-camera"></i> Take Photo
+                        </a>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <a href="{% url 'log_voice' %}" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-microphone"></i> Voice Input
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

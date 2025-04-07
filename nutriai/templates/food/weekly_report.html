@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Weekly Report 📊 | NutriAI{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Bar chart for daily calories
+    const barCtx = document.createElement('canvas');
+    document.querySelector('.chart-bar-container').appendChild(barCtx);
+    
+    new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ daily_labels|safe }},
+            datasets: [{
+                label: 'Calories',
+                data: {{ daily_values|safe }},
+                backgroundColor: 'rgba(37, 99, 235, 0.7)',
+                borderColor: 'rgba(37, 99, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Calories'
+                    }
+                }
+            },
+            animation: {
+                duration: 1000,
+                easing: 'easeOutQuart'
+            }
+        }
+    });
+
+    // Pie chart for macros
+    const pieCtx = document.createElement('canvas');
+    document.querySelector('.pie-chart-container').appendChild(pieCtx);
+    
+    new Chart(pieCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Protein', 'Carbs', 'Fat'],
+            datasets: [{
+                data: [{{ macros.protein }}, {{ macros.carbs }}, {{ macros.fat }}],
+                backgroundColor: [
+                    'rgba(37, 99, 235, 0.7)',
+                    'rgba(16, 185, 129, 0.7)',
+                    'rgba(245, 158, 11, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(37, 99, 235, 1)',
+                    'rgba(16, 185, 129, 1)',
+                    'rgba(245, 158, 11, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            },
+            cutout: '70%'
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container anime-report-container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h1 class="anime-title mb-4">
+                <i class="fas fa-chart-line"></i> Weekly Nutrition Report 📊
+                <div class="parrot-mascot">🦜</div>
+            </h1>
+            
+            <div class="anime-report-box p-4 mb-4">
+                <div class="report-header">
+                    <h2 class="emoji-header">📅 Week of {{ week_start|date:"M j" }} - {{ week_end|date:"M j" }}</h2>
+                    <div class="report-summary">
+                        <div class="summary-item">
+                            <span class="emoji">🍎</span>
+                            <span class="value">{{ total_foods }}</span>
+                            <span class="label">Foods logged</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="emoji">🔥</span>
+                            <span class="value">{{ total_calories }}</span>
+                            <span class="label">Total calories</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="emoji">💪</span>
+                            <span class="value">{{ avg_protein }}g</span>
+                            <span class="label">Avg protein/day</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-charts mt-4">
+                    <div class="chart-container">
+                        <h3 class="chart-title">Daily Calorie Intake</h3>
+                        <div class="chart-bar-container">
+                            {% for day in daily_calories %}
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-label">{{ day.day|slice:":3" }}</div>
+                                <div class="chart-bar" style="height: {{ day.height }}%">
+                                    <div class="chart-bar-value">{{ day.calories }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="macros-pie mt-4">
+                        <h3 class="chart-title">Macronutrient Distribution</h3>
+                        <div class="pie-chart-container">
+                            <div class="pie-chart">
+                                <div class="pie-segment protein" style="--percentage: {{ macros.protein }}"></div>
+                                <div class="pie-segment carbs" style="--percentage: {{ macros.carbs }}"></div>
+                                <div class="pie-segment fat" style="--percentage: {{ macros.fat }}"></div>
+                            </div>
+                            <div class="pie-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color protein"></span>
+                                    Protein: {{ macros.protein }}%
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color carbs"></span>
+                                    Carbs: {{ macros.carbs }}%
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color fat"></span>
+                                    Fat: {{ macros.fat }}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-feedback mt-4">
+                    <h3 class="feedback-title">📝 AI Nutritionist Feedback</h3>
+                    <div class="feedback-content">
+                        <div class="feedback-emoji">💡</div>
+                        <div class="feedback-text">
+                            {{ ai_feedback }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-actions mt-4">
+                    <button class="btn anime-btn-primary">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                    <button class="btn anime-btn-suggestion">
+                        <i class="fas fa-share-alt"></i> Share Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

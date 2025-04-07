@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Exercise Home{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-dumbbell"></i> Exercise Recommendations</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h4><i class="fas fa-heartbeat"></i> Chest</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>Exercises to strengthen your chest muscles.</p>
+                                <a href="{% url 'body_part' 'chest' %}" class="btn btn-primary w-100">
+                                    View Exercises
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-success text-white">
+                                <h4><i class="fas fa-running"></i> Legs</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>Exercises for stronger legs and lower body.</p>
+                                <a href="{% url 'body_part' 'legs' %}" class="btn btn-success w-100">
+                                    View Exercises
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-info text-white">
+                                <h4><i class="fas fa-fire-alt"></i> Abs</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>Core strengthening exercises.</p>
+                                <a href="{% url 'body_part' 'abs' %}" class="btn btn-info w-100">
+                                    View Exercises
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{% url 'log_exercise' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus"></i> Log New Exercise
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

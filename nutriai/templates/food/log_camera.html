@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Food Scanner | NutriAI{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/vertical_anime.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="vertical-section">
+  <div class="anime-card">
+    <h1 class="anime-title">📸 Food Scanner</h1>
+    
+    <div class="camera-container">
+        <video id="cameraFeed" class="camera-view" autoplay playsinline></video>
+        <div class="camera-overlay">
+            <div class="focus-circle"></div>
+            <div class="instruction-text">Center food in circle</div>
+        </div>
+        <canvas id="canvas" style="display:none;"></canvas>
+    </div>
+    
+    <button id="captureBtn" class="anime-button" disabled>
+        <span class="button-icon">📸</span>
+        <span class="button-text">Loading Camera...</span>
+    </button>
+  </div>
+
+  <div class="anime-card" id="resultsBox" style="display:none;">
+    <h2 class="anime-title">🍎 Analysis Results</h2>
+    
+    <div class="food-display">
+        <div class="food-emoji" id="foodEmoji">🍎</div>
+        <h3 class="food-name" id="foodName">Apple</h3>
+    </div>
+    
+    <div class="nutrition-grid">
+        <div class="nutrition-item">
+            <span class="nutrition-icon">🔥</span>
+            <span class="nutrition-label">Calories:</span>
+            <span class="nutrition-value" id="calories">52</span>
+            <span class="nutrition-unit">kcal</span>
+        </div>
+        <div class="nutrition-item">
+            <span class="nutrition-icon">💪</span>
+            <span class="nutrition-label">Protein:</span>
+            <span class="nutrition-value" id="protein">0.3</span>
+            <span class="nutrition-unit">g</span>
+        </div>
+        <div class="nutrition-item">
+            <span class="nutrition-icon">🌾</span>
+            <span class="nutrition-label">Carbs:</span>
+            <span class="nutrition-value" id="carbs">14</span>
+            <span class="nutrition-unit">g</span>
+        </div>
+        <div class="nutrition-item">
+            <span class="nutrition-icon">🥑</span>
+            <span class="nutrition-label">Fat:</span>
+            <span class="nutrition-value" id="fat">0.2</span>
+            <span class="nutrition-unit">g</span>
+        </div>
+    </div>
+
+    <div class="serving-size">
+        <label for="servingSlider">Serving Size:</label>
+        <input type="range" id="servingSlider" min="1" max="3" value="1" step="1">
+        <div class="serving-emoji" id="servingEmoji">🍽️</div>
+    </div>
+
+    <button class="anime-button confirm-button">
+        <span class="button-icon">💾</span>
+        Save to Food Log
+    </button>
+  </div>
+</div>
+
+{% block scripts %}
+<script src="{% static 'js/camera.js' %}"></script>
+<script>
+function updateServing(value) {
+    const emojis = ['🍽️', '🍲', '🍱'];
+    document.getElementById('servingEmoji').textContent = emojis[value-1];
+    // Update nutrition values based on serving size
+}
+</script>
+{% endblock %}
+{% endblock %}
